@@ -5,7 +5,8 @@ import {
     Image, 
     ScrollView,
     TouchableHighlight,
-    Button 
+    Button,
+    AsyncStorage
 } from 'react-native';
 import axios from 'axios';
 import { StackNavigator } from 'react-navigation';
@@ -13,11 +14,21 @@ import Hamburger from './components/';
 import WeatherImg from './components/WeatherImg';
 
 class GPSWeatherApp extends Component {
-
     static navigationOptions = {
         header: null // !!! Hide Header
       };
+      constructor(props) {
+          super(props);
+          this.username = {
+            user: 'Chris',
+            pass: 'alibaba',
+            cityies: [],
+            
+           };
+           console.log(this.username.user);
+      }
 state = { 
+    code: '',
     location: [], 
     weatherNow: [], 
     weatherTwo: [], 
@@ -54,15 +65,7 @@ state = {
 watchID: ?number = null;
 
 componentWillMount = () => {
-//  componentWillMount = () => {
-//   navigator.geolocation.getCurrentPosition(
-//     (position) => {
-//        const initialPosition = JSON.stringify(position);
-//        this.setState({ initialPosition });
-//     },
-//     (error) => alert(error.message),
-//     { enableHighAccuracy: true, timeout: 20000, maximumAge: 2000 }
-//  );
+    this.onRetrieve();
  this.watchID = navigator.geolocation.watchPosition((position) => {
    const pos = position;
    const lastPositionlongitude = position.coords.longitude;
@@ -112,9 +115,27 @@ componentWillUnmount = () => {
     // this.setState({
     //     low: false
     // });
-    onPressHamburger(){
-        this.props.navigation.navigate('Menu', { Home: this });
-        this.setState({ active: this.state.active === false });
+    async onRetrieve() {
+                const hash = await AsyncStorage.getItem('hashCode');
+                console.log(hash);
+                this.state.code = hash;
+                console.log(this.state.code);
+                
+    }
+            goBack() {
+                const { navigation } = this.props;
+                navigation.goBack();
+                navigation.state.params.onSelect({ username: this.state.username });
+                navigation.state.params.onSelect({ password: this.state.password });
+            }
+    onPressHamburger = () => {
+        console.log(this.state.code);
+        if (this.state.code === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9') {
+            this.props.navigation.navigate('Menu', { code: this.state.code });
+            // this.setState({ active: this.state.active === false });
+        } else {
+            this.props.navigation.navigate('SignIn', { SignIn: this, username: this.username.user, password: this.username.pass, countryies: this.username.cityies, hashCode: this.username.hashCode });
+        }
     }
     
     // }
@@ -609,7 +630,7 @@ componentWillUnmount = () => {
                                 <View style={styles.resizeWrapperCircle}>                      
                                     <Hamburger 
                                     style={[styles.hamburgerColor, styles.resizeForCircle]}
-                                    onPress={this.onPressHamburger.bind(this)}
+                                    onPress={this.onPressHamburger}
                                     />
                                     <View style={styles.resizeForCircle} />
                                     <View style={styles.counterCircleBox}>
@@ -624,7 +645,7 @@ componentWillUnmount = () => {
                 <View style={styles.resizeRectSpaceContainer}>
                     <View style={[styles.boxLineSeven, styles.resizeRectSpace]}>                     
                         <Hamburger 
-                        onPress={this.onPressHamburger.bind(this)}
+                        onPress={this.onPressHamburger}
                          /*{() => this.setState({ active: !this.state.active })}*/  
                         /> 
                     </View>
@@ -738,14 +759,6 @@ componentWillUnmount = () => {
                         <View style={styles.bottomBox}>
                             <View style={styles.bottomBoxInline}> 
                                 <Text style={styles.weatherFonts}>
-                                    {/* {this.state.highLowTwo ? 
-                                    this.state.weatherNow.high // weatherNow.low
-                                    : this.state.weatherTwo.high // weatherTwo.low
-                                    }
-                                    {this.state.highLowThree 
-                                    ? this.state.weatherNow
-                                    : this.state.weatherThree.high
-                                    } */}
                                     { (() => {
                                         if (this.state.highLow === 0) {
                                             return this.state.weatherNow.high;
@@ -815,7 +828,7 @@ const styles = {
     },
     textFonts: {
         fontSize: 25,
-        fontFamily: 'HelveticaNeueLTStd ThCn',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
         fontWeight: 'normal'
     },
     boxLineOne: {
@@ -924,7 +937,7 @@ const styles = {
     },
     timeStyle: {
         color: '#ffffff',
-        fontFamily: 'HelveticaNeueLTStd ThCn',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
         fontSize: 70
     },
     scrollView: {
@@ -1001,7 +1014,7 @@ const styles = {
         flex: 0.5
     },
     weatherFonts: {
-        fontFamily: 'HelveticaNeueLTStd ThCn',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
         color: '#6a6a6a',
         fontSize: 80
     },
@@ -1035,11 +1048,11 @@ const styles = {
     highLowPosition: {
         flexDirection: 'row'
     },
-    // highLowFontsLine: {
-    //     fontSize: 90,
-    //     fontWeight: 'normal',
-    //     fontFamily: 'HelveticaNeueLTStd ThCn',
-    // }
+     highLowFontsLine: {
+        fontSize: 90,
+        fontWeight: 'normal',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
+    },
     lineSize: {
         height: 70,
         width: 1.5

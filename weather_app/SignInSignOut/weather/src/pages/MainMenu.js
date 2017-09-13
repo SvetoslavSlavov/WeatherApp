@@ -1,26 +1,47 @@
 import React from 'react';
-import { View, Text, Button, Image } from 'react-native';
+import { View, Text, Button, Image, TouchableHighlight } from 'react-native';
+import { StackNavigation } from 'react-navigation';
 import Hamburger from '../components/';
 import SignUp from './SignUp';
+import EditLocation from './EditLocation';
+
 class MainMenu extends React.Component {
+  static navigationOptions =
+  {
+     title: 'MainMenu',
+   
+  };
   constructor(props) {
     super(props);
     this.state = {
-      active: false
+      active: false,
+      username: '',
+      password: '',
     };
-  
+    // console.log(this.props.navigation.state.params.code);
   }
+  
+  onSelect = (user, pass) => {
+    this.setState(user);
+    this.setState(pass);
+  };
   onPressSignIn() {
-    this.props.navigation.navigate('SignIn');
+    this.props.navigation.navigate('SignIn', { onSelect: this.onSelect });
   }
   onPressHamburger() {
-    this.props.navigation.navigate('Home');
-    this.props.navigation.state.params.Home.setState({ update: true });
+    // this.props.navigation.navigate('Home', null);
+    // this.props.navigation.state.params.Home.setState({ update: true });
     
     this.setState({ active: this.state.active === false });
     this.props.navigation.goBack(null);
 }
+EditLocation = () => {
+  // this.props.navigation.navigate('EditLocation', { onSelect: this.onSelect });
+  this.props.navigation.navigate('EditLocation');
+  console.log('editlocation');
+}
   render() {
+
     return (
       <View style={styles.container}>
         <View style={styles.hamburger}>
@@ -31,7 +52,8 @@ class MainMenu extends React.Component {
               <Image style={styles.imgUser} source={require('../img/user.png')} />
             </View>
             <View style={styles.flexEach}>
-              <Button color='#333333' icon={styles.backgroundColor} style={styles.backgroundColor} title='Sign In / Sing Up' onPress={this.onPressSignIn.bind(this)} /> 
+              
+              <Button color='white' icon={styles.backgroundColor} style={styles.backgroundColor} title='Welcome!' onPress={this.onPressSignIn.bind(this)} /> 
             </View>
             
           </View>
@@ -55,7 +77,7 @@ class MainMenu extends React.Component {
             <Image style={styles.imgUser} source={require('../img/share.png')} /> 
           
             <View style={styles.flexEach}>
-              <Button color='#333333'style={styles.backgroundColor} title='Share' onPress={this.onPressHamburger.bind(this)} />
+              <Button color='white'style={styles.backgroundColor} title='Share' onPress={this.onPressHamburger.bind(this)} />
             </View>
 
           </View>
@@ -64,7 +86,7 @@ class MainMenu extends React.Component {
             <Image style={styles.imgMap} source={require('../img/map.png')} />
 
             <View style={styles.flexEach}>
-              <Button color='#333333' style={styles.backgroundColor} title='Edit Location' onPress={this.onPressHamburger.bind(this)} />
+              <Button color='white' style={styles.backgroundColor} title='Edit Location' onPress={() => this.props.navigation.navigate('EditLocation')} />
             </View>  
           </View>
 
@@ -73,7 +95,7 @@ class MainMenu extends React.Component {
           <Image style={styles.imgMap} source={require('../img/map.png')} />
 
           <View style={styles.flexEach}>        
-            <Button color='#333333'style={styles.backgroundColor} title='Current Location' onPress={this.onPressHamburger.bind(this)} />
+            <Button color='white'style={styles.backgroundColor} title='Current Location' onPress={this.onPressHamburger.bind(this)} />
           </View>
           </View>
 
@@ -82,7 +104,7 @@ class MainMenu extends React.Component {
           <Image style={styles.imgMap} source={require('../img/map.png')} />
 
           <View style={styles.flexEach}>  
-            <Button color='#333333'style={styles.backgroundColor} title='Sofia' onPress={this.onPressHamburger.bind(this)} />
+            <Button color='white'style={styles.backgroundColor} title='Sofia' onPress={this.onPressHamburger.bind(this)}></Button>
           </View>
 
           </View>
@@ -91,11 +113,18 @@ class MainMenu extends React.Component {
 
             <Image style={styles.imgMap} source={require('../img/map.png')} />
             <View style={styles.flexEach}>
-              <Button color='#333333'style={styles.backgroundColor} title='New York' onPress={this.onPressHamburger.bind(this)} />
+            <Button color='white'style={styles.backgroundColor} title='Sofia' onPress={this.onPressHamburger.bind(this)}></Button>
             </View>
           </View>
+          {/*{this.state.city1}*/}
+          <Text>
+            {this.state.username}
+          </Text>  
+          <Text>
+            {this.state.password}
+          </Text>  
       </View>
-    );
+    );  
   }
 }
 
@@ -110,7 +139,7 @@ const styles = {
     },
     backgroundColor: {
       backgroundColor: '#333333',
-      // fontFamily: 'HelveticaNeueLTStd ThCn',
+      //fontFamily: 'HelveticaNeueLTStd ThCn',
     },
     flexImageButton: {
       flex: 0.1,
@@ -148,6 +177,9 @@ const styles = {
       backgroundColor: '#333333',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    textColor: {
+      color: '#333333'
     }
 };
 

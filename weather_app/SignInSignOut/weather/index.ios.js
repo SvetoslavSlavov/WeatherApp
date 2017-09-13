@@ -11,43 +11,28 @@ import {
   Text,
   View
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import WeatherApp from './src/WeatherApp';
+import MainMenu from './src/pages/MainMenu';
+import GPSWeatherApp from './src/GPSWeatherApp';
+import SignIn from './src/pages/SignIn';
+import SignUp from './src/pages/SignUp';
+import ProfileActivity from './src/pages/ProfileActivity';
+import EditLocation from './src/pages/EditLocation';
 
-export default class weather extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
+const Nav = StackNavigator({
+  // Home: { screen: WeatherApp },
+  Home: { screen: GPSWeatherApp },
+  Menu: { screen: MainMenu },
+  SignIn: { screen: SignIn },
+  SignUp: { screen: SignUp },
+  ProfileActivity: { screen: ProfileActivity }, 
+  EditLocation: { screen: EditLocation },
+}, { headerMode: 'none' });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+const App = () => (
+  // <WeatherApp />
+  <GPSWeatherApp />
+);
 
-AppRegistry.registerComponent('weather', () => weather);
+AppRegistry.registerComponent('weather', () => Nav, App);

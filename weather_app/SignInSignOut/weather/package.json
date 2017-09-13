@@ -8,6 +8,8 @@
 	},
 	"dependencies": {
 		"axios": "^0.16.2",
+		"eslint": "^4.6.1",
+		"eslint-config-rallycoding": "^3.2.0",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.47.1",
 		"react-native-scrolling-button-menu": "0.0.4",
