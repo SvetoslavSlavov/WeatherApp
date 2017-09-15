@@ -22,10 +22,13 @@ class GPSWeatherApp extends Component {
           this.username = {
             user: 'Chris',
             pass: 'alibaba',
-            cityies: [],
+            city1: 'Sofia', 
+            city2: 'Plovdiv', 
+            city3: 'Varna',
             
            };
-           console.log(this.username.user);
+        //    console.log(this.username.user);
+        console.log(this.username.city1);
       }
 state = { 
     code: '',
@@ -131,7 +134,7 @@ componentWillUnmount = () => {
     onPressHamburger = () => {
         console.log(this.state.code);
         if (this.state.code === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9') {
-            this.props.navigation.navigate('Menu', { code: this.state.code });
+            this.props.navigation.navigate('Menu', { code: this.state.code, city1: this.username.city1, city2: this.username.city2, city3: this.username.city3 });
             // this.setState({ active: this.state.active === false });
         } else {
             this.props.navigation.navigate('SignIn', { SignIn: this, username: this.username.user, password: this.username.pass, countryies: this.username.cityies, hashCode: this.username.hashCode });

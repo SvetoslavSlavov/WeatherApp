@@ -5,7 +5,7 @@ import {
     Image, 
     ScrollView,
     TouchableHighlight,
-    Button 
+    Button,
 } from 'react-native';
 import axios from 'axios';
 import { StackNavigator } from 'react-navigation';
@@ -17,7 +17,20 @@ class WeatherApp extends Component {
     static navigationOptions = {
         header: null // !!! Hide Header
       };
+      constructor(props) {
+        super(props);
+        this.username = {
+          user: 'Chris',
+          pass: 'alibaba',
+          city1: 'Sofia', 
+          city2: 'Plovdiv', 
+          city3: 'Varna',
+          
+         };
+        }
 state = { 
+    hashCode: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    code: '',
     location: [], 
     weatherNow: [], 
     weatherTwo: [], 
@@ -45,13 +58,20 @@ state = {
     // highLowThree: false,
     // lowNow: [],
     // lowTwo: [],
+    initialPosition: 'unknown',
+    lastPositionlongitude: 'unknown',
+    lastPositionlatitude: 'unknown',
+    update: false,
+    active: false
 };
 
 componentWillMount() {
+    this.onRetrieve();
     console.log(this.props.navigation.state.params.location);
     const loc = this.props.navigation.state.params.location;
     console.log(loc);
-    axios.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20%20where%20text%3D%22%27'+loc+'%27%2C%20bg%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
+    console.log(loc.replace(/ /g, '%20'));
+    axios.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20%20where%20text%3D%22%27'+loc.replace(/ /g, '%20')+'%27%2C%20bg%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
         .then(response => {
             console.log(response.data.query.results.channel);
             return this.setState({ weatherNow: response.data.query.results.channel.item.forecast[0],
@@ -85,10 +105,29 @@ componentWillMount() {
     // this.setState({
     //     low: false
     // });
-    onPressHamburger(){
-        this.props.navigation.navigate('Menu');
-        this.setState({ active: !this.state.active }); 
-    }
+    async onRetrieve() {
+        const hash = await AsyncStorage.getItem('hashCode');
+        console.log(hash);
+        this.state.code = hash;
+        console.log(this.state.code);
+        
+}
+    
+onPressHamburger = () => {
+console.log(this.state.code);
+if (this.state.hashCode === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9') {
+    this.props.navigation.navigate('Menu', { code: this.state.code, city1: this.username.city1, city2: this.username.city2, city3: this.username.city3 });
+    // this.setState({ active: this.state.active === false });
+} else {
+    this.props.navigation.navigate('SignIn', { SignIn: this, username: this.username.user, password: this.username.pass, countryies: this.username.cityies, hashCode: this.username.hashCode });
+}
+}
+goBack() {
+    const { navigation } = this.props;
+    navigation.goBack();
+    navigation.state.params.onSelect({ username: this.state.username });
+    navigation.state.params.onSelect({ password: this.state.password });
+}
     
     // }
     // map function aray helper pass in fat arow function five times for each one

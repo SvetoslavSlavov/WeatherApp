@@ -19,6 +19,7 @@ import SignIn from './src/pages/SignIn';
 import SignUp from './src/pages/SignUp';
 import ProfileActivity from './src/pages/ProfileActivity';
 import EditLocation from './src/pages/EditLocation';
+import UserWeatherApp from './src/UserWeatherApp';
 
 const Nav = StackNavigator({
   Home: { screen: GPSWeatherApp },
@@ -27,6 +28,7 @@ const Nav = StackNavigator({
   SignIn: { screen: SignIn },
   Menu: { screen: MainMenu },
   SignUp: { screen: SignUp },
+  UserWeatherApp: { screen: UserWeatherApp },
 }, { headerMode: 'none' });
 
 const App = () => (

@@ -17,10 +17,19 @@ class MainMenu extends React.Component {
       active: false,
       username: '',
       password: '',
+      city1: '',
+      city2: '',
+      city3: '',
+      city1Flag: false,
+      city2Flag: false,
+      city3Flag: false
     };
     // console.log(this.props.navigation.state.params.code);
+    this.state.city1 = this.props.navigation.state.params.city1;
+    this.state.city2 = this.props.navigation.state.params.city2;
+    this.state.city3 = this.props.navigation.state.params.city3;
   }
-  
+ 
   onSelect = (user, pass) => {
     this.setState(user);
     this.setState(pass);
@@ -39,6 +48,38 @@ EditLocation = () => {
   // this.props.navigation.navigate('EditLocation', { onSelect: this.onSelect });
   this.props.navigation.navigate('EditLocation');
   console.log('editlocation');
+}
+CurrentLocation = () => {
+  this.props.navigation.navigate('GPSWeatherApp');
+}
+
+FlagOne() {
+  console.log('hisada');
+  this.state.city1Flag = true;
+  this.UserWeatherApp();
+}
+FlagTwo() {
+  this.state.city2Flag = true;
+  this.UserWeatherApp();
+}
+FlagThree() {
+  this.state.city3Flag = true;
+  this.UserWeatherApp();
+}
+UserWeatherApp = () => {
+  this.state.city1 = this.props.navigation.state.params.city1;
+  this.state.city2 = this.props.navigation.state.params.city2;
+  this.state.city3 = this.props.navigation.state.params.city3;
+  console.log('userweatherapp');
+  if (this.state.city1Flag === true) {
+  this.props.navigation.navigate('UserWeatherApp', { city: this.state.city1 });
+  } 
+  if (this.state.city2Flag === true) {
+    this.props.navigation.navigate('UserWeatherApp', { city: this.state.city2 });
+  } 
+  if (this.state.city3Flag === true) {
+    this.props.navigation.navigate('UserWeatherApp', { city: this.state.city3 });
+  }
 }
   render() {
 
@@ -95,7 +136,7 @@ EditLocation = () => {
           <Image style={styles.imgMap} source={require('../img/map.png')} />
 
           <View style={styles.flexEach}>        
-            <Button color='white'style={styles.backgroundColor} title='Current Location' onPress={this.onPressHamburger.bind(this)} />
+            <Button color='white'style={styles.backgroundColor} title='Current Location' onPress={this.CurrentLocation()} />
           </View>
           </View>
 
@@ -104,7 +145,7 @@ EditLocation = () => {
           <Image style={styles.imgMap} source={require('../img/map.png')} />
 
           <View style={styles.flexEach}>  
-            <Button color='white'style={styles.backgroundColor} title='Sofia' onPress={this.onPressHamburger.bind(this)}></Button>
+            <Button color='white'style={styles.backgroundColor} title={this.state.city1} onPress={this.FlagOne.bind(this)} />
           </View>
 
           </View>
@@ -113,16 +154,25 @@ EditLocation = () => {
 
             <Image style={styles.imgMap} source={require('../img/map.png')} />
             <View style={styles.flexEach}>
-            <Button color='white'style={styles.backgroundColor} title='Sofia' onPress={this.onPressHamburger.bind(this)}></Button>
+            <Button color='white'style={styles.backgroundColor} title={this.state.city2} onPress={this.FlagTwo.bind(this)} />
             </View>
           </View>
           {/*{this.state.city1}*/}
-          <Text>
+          {/* <Text>
             {this.state.username}
           </Text>  
           <Text>
             {this.state.password}
-          </Text>  
+          </Text>   */}
+          <View style={styles.flexImageButton}>
+
+          <Image style={styles.imgMap} source={require('../img/map.png')} />
+
+          <View style={styles.flexEach}>  
+            <Button color='white'style={styles.backgroundColor} title={this.state.city3} onPress={this.FlagThree.bind(this)} />
+          </View>
+
+          </View>
       </View>
     );  
   }
