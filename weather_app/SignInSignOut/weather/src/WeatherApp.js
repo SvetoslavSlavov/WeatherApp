@@ -48,7 +48,10 @@ state = {
 };
 
 componentWillMount() {
-    axios.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20%20where%20text%3D%22sofia%2C%20bg%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
+    console.log(this.props.navigation.state.params.location);
+    const loc = this.props.navigation.state.params.location;
+    console.log(loc);
+    axios.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20%20where%20text%3D%22%27'+loc+'%27%2C%20bg%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
         .then(response => {
             console.log(response.data.query.results.channel);
             return this.setState({ weatherNow: response.data.query.results.channel.item.forecast[0],
@@ -790,7 +793,7 @@ const styles = {
     },
     textFonts: {
         fontSize: 25,
-        fontFamily: 'HelveticaNeueLTStd ThCn',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
         fontWeight: 'normal'
     },
     boxLineOne: {
@@ -899,8 +902,8 @@ const styles = {
     },
     timeStyle: {
         color: '#ffffff',
-        fontFamily: 'HelveticaNeueLTStd ThCn',
-        fontSize: 90
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
+        fontSize: 70
     },
     scrollView: {
         flex: 0.5,
@@ -939,7 +942,7 @@ const styles = {
     },
     resizeRectSpace: {
         // flex: 0.35,
-        flex: 0.40
+        // flex: 0.40
     },
     spaceImageDateAndTime: {
         flex: 1,
@@ -976,7 +979,7 @@ const styles = {
         flex: 0.5
     },
     weatherFonts: {
-        fontFamily: 'HelveticaNeueLTStd ThCn',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
         color: '#6a6a6a',
         fontSize: 80
     },
@@ -1010,11 +1013,11 @@ const styles = {
     highLowPosition: {
         flexDirection: 'row'
     },
-    // highLowFontsLine: {
-    //     fontSize: 90,
-    //     fontWeight: 'normal',
-    //     fontFamily: 'HelveticaNeueLTStd ThCn',
-    // }
+     highLowFontsLine: {
+        fontSize: 90,
+        fontWeight: 'normal',
+        fontFamily: 'HelveticaNeueLTStd-ThCn',
+    },
     lineSize: {
         height: 70,
         width: 1.5

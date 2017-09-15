@@ -21,13 +21,12 @@ import ProfileActivity from './src/pages/ProfileActivity';
 import EditLocation from './src/pages/EditLocation';
 
 const Nav = StackNavigator({
-  // Home: { screen: WeatherApp },
   Home: { screen: GPSWeatherApp },
-  Menu: { screen: MainMenu },
-  SignIn: { screen: SignIn },
-  SignUp: { screen: SignUp },
-  ProfileActivity: { screen: ProfileActivity }, 
+  WeatherLocation: { screen: WeatherApp },
   EditLocation: { screen: EditLocation },
+  SignIn: { screen: SignIn },
+  Menu: { screen: MainMenu },
+  SignUp: { screen: SignUp },
 }, { headerMode: 'none' });
 
 const App = () => (

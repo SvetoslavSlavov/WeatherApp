@@ -21,9 +21,9 @@ import SignUp from './src/pages/SignUp';
 import ProfileActivity from './src/pages/ProfileActivity';
 
 const Nav = StackNavigator({
-  // Home: { screen: WeatherApp },
-  EditLocation: { screen: EditLocation },
   Home: { screen: GPSWeatherApp },
+  WeatherLocation: { screen: WeatherApp },
+  EditLocation: { screen: EditLocation },
   SignIn: { screen: SignIn },
   Menu: { screen: MainMenu },
   SignUp: { screen: SignUp },
